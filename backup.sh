@@ -12,4 +12,14 @@
     echo
     echo "Uso da memoria:"
     free -h
-} | tee relatorio.log
+
+    echo
+    echo "Verificacao de alerta do disco:"
+    USO=$(df / | awk 'NR==2 {gsub("%","",$5); print $5}')
+
+    if [ "$USO" -ge 80 ]; then
+        echo "ALERTA: disco com ${USO}% de uso!"
+    else
+        echo "OK: disco com ${USO}% de uso."
+    fi
+} | tee /home/carlos/monitoramento-bash/relatorio.log
